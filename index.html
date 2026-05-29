@@ -1295,6 +1295,20 @@
             color: #2bcb75;
         }
 
+        .form-status.error {
+            display: block;
+            background: rgba(234, 67, 53, 0.05);
+            border: 1px solid rgba(234, 67, 53, 0.2);
+            color: var(--accent-google-red);
+        }
+
+        .form-status.loading {
+            display: block;
+            background: rgba(26, 115, 232, 0.05);
+            border: 1px solid rgba(26, 115, 232, 0.2);
+            color: var(--accent-google-blue);
+        }
+
         /* FOOTER */
         footer {
             padding: 4rem 2rem;
@@ -2418,21 +2432,50 @@
         resizeCanvas();
         animate();
 
-        // CLIENT FORM SUBMISSION SIMULATION
+        // CLIENT FORM SUBMISSION WITH DIRECT EMAIL TRANSIT
         const contactForm = document.getElementById('contact-form');
         const formStatus = document.getElementById('form-status');
 
         contactForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            formStatus.style.display = 'none';
+            formStatus.style.display = 'block';
+            formStatus.className = 'form-status loading';
+            formStatus.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Establishing secure uplink... Sending your message.`;
 
             const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
 
-            setTimeout(() => {
-                formStatus.className = 'form-status success';
-                formStatus.innerHTML = `<i class="fa-solid fa-circle-check"></i> Uplink Securely Configured! Message from "${name}" transmitted successfully to shivshelke210@gmail.com.`;
-                contactForm.reset();
-            }, 800);
+            fetch('https://formsubmit.co/ajax/shivshelke210@gmail.com', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: name,
+                    email: email,
+                    _subject: `New Portfolio Message: ${subject}`,
+                    message: message
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success === "true" || data.success === true) {
+                    formStatus.className = 'form-status success';
+                    formStatus.innerHTML = `<i class="fa-solid fa-circle-check"></i> Uplink Securely Configured! Message from "${name}" transmitted successfully. Check your email to activate the system (first time only).`;
+                    contactForm.reset();
+                } else {
+                    formStatus.className = 'form-status error';
+                    formStatus.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Transmission failed. Please email directly to shivshelke210@gmail.com.`;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                formStatus.className = 'form-status error';
+                formStatus.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Satellite uplink failed. Please send your mail directly to shivshelke210@gmail.com.`;
+            });
         });
     </script>
 </body>
