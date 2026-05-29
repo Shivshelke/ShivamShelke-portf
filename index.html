@@ -2359,90 +2359,108 @@
         // ==========================================
         const canvas = document.getElementById('neural-canvas');
         const ctx = canvas.getContext('2d');
+        let particles = [];
+        let connectionDistance = 140;
+        let maxParticles = 80;
 
         let canvasMouse = {
             x: null,
             y: null,
-            targetX: null,
-            targetY: null
+            radius: 180
         };
 
         window.addEventListener('mousemove', (e) => {
-            canvasMouse.targetX = e.clientX;
-            canvasMouse.targetY = e.clientY;
+            canvasMouse.x = e.x;
+            canvasMouse.y = e.y;
         });
 
         window.addEventListener('mouseout', () => {
-            canvasMouse.targetX = null;
-            canvasMouse.targetY = null;
+            canvasMouse.x = null;
+            canvasMouse.y = null;
         });
 
         function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
+            if (canvas.width < 768) {
+                maxParticles = 35;
+                connectionDistance = 90;
+            } else {
+                maxParticles = 80;
+                connectionDistance = 140;
+            }
+            initParticles();
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.45;
+                this.vy = (Math.random() - 0.5) * 0.45;
+                this.radius = Math.random() * 1.5 + 1;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0 || this.x > canvas.width) this.vx = -this.vx;
+                if (this.y < 0 || this.y > canvas.height) this.vy = -this.vy;
+
+                if (canvasMouse.x != null) {
+                    let dx = canvasMouse.x - this.x;
+                    let dy = canvasMouse.y - this.y;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < canvasMouse.radius) {
+                        this.x -= dx * 0.012; // Gentle organic drag
+                        this.y -= dy * 0.012;
+                    }
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(26, 115, 232, 0.45)';
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < maxParticles; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function drawLines() {
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    let dx = particles[i].x - particles[j].x;
+                    let dy = particles[i].y - particles[j].y;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < connectionDistance) {
+                        let opacity = (1 - dist / connectionDistance) * 0.12;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = `rgba(26, 115, 232, ${opacity})`;
+                        ctx.lineWidth = 0.8;
+                        ctx.stroke();
+                    }
+                }
+            }
         }
 
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // Premium smooth cursor interpolation
-            if (canvasMouse.targetX !== null && canvasMouse.x !== null) {
-                canvasMouse.x += (canvasMouse.targetX - canvasMouse.x) * 0.15;
-                canvasMouse.y += (canvasMouse.targetY - canvasMouse.y) * 0.15;
-            } else if (canvasMouse.targetX !== null) {
-                canvasMouse.x = canvasMouse.targetX;
-                canvasMouse.y = canvasMouse.targetY;
-            } else {
-                canvasMouse.x = null;
-                canvasMouse.y = null;
-            }
-
-            if (canvasMouse.x !== null) {
-                // 1. Soft radial premium spotlight backdrop glow
-                const spotlight = ctx.createRadialGradient(canvasMouse.x, canvasMouse.y, 0, canvasMouse.x, canvasMouse.y, 250);
-                spotlight.addColorStop(0, 'rgba(26, 115, 232, 0.045)');
-                spotlight.addColorStop(0.5, 'rgba(0, 188, 212, 0.01)');
-                spotlight.addColorStop(1, 'transparent');
-                
-                ctx.fillStyle = spotlight;
-                ctx.beginPath();
-                ctx.arc(canvasMouse.x, canvasMouse.y, 250, 0, Math.PI * 2);
-                ctx.fill();
-
-                // 2. Razor-thin CAD blueprint crosshair guidelines
-                ctx.strokeStyle = 'rgba(15, 23, 42, 0.02)';
-                ctx.lineWidth = 0.85;
-                ctx.setLineDash([4, 4]); // Clean dotted coordinate lines
-                
-                // Horizontal coordinate
-                ctx.beginPath();
-                ctx.moveTo(0, canvasMouse.y);
-                ctx.lineTo(canvas.width, canvasMouse.y);
-                ctx.stroke();
-
-                // Vertical coordinate
-                ctx.beginPath();
-                ctx.moveTo(canvasMouse.x, 0);
-                ctx.lineTo(canvasMouse.x, canvas.height);
-                ctx.stroke();
-                ctx.setLineDash([]); // Reset line dash
-
-                // 3. Real-time CAD coordinate tag
-                ctx.font = "bold 8px 'JetBrains Mono', monospace";
-                ctx.fillStyle = 'rgba(26, 115, 232, 0.55)';
-                ctx.textAlign = 'left';
-                ctx.textBaseline = 'bottom';
-                
-                const coordinateString = `SYS_COORDS // [X: ${Math.round(canvasMouse.x)}px, Y: ${Math.round(canvasMouse.y)}px]`;
-                ctx.fillText(coordinateString, canvasMouse.x + 12, canvasMouse.y - 8);
-
-                // Fine spotlight pointer dot
-                ctx.fillStyle = 'rgba(26, 115, 232, 0.7)';
-                ctx.beginPath();
-                ctx.arc(canvasMouse.x, canvasMouse.y, 2, 0, Math.PI * 2);
-                ctx.fill();
-            }
-
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            drawLines();
             requestAnimationFrame(animate);
         }
 
