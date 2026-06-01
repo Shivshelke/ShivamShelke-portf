@@ -9,7 +9,7 @@ const FRAME_COUNT = 120
 export default function ScrollyCanvas() {
   const containerRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const [images, setImages] = useState<HTMLImageElement[]>([])
+  const imagesRef = useRef<HTMLImageElement[]>([])
   const [loadedCount, setLoadedCount] = useState(0)
   const [firstFrameLoaded, setFirstFrameLoaded] = useState(false)
   
@@ -18,9 +18,10 @@ export default function ScrollyCanvas() {
     offset: ['start start', 'end end']
   })
   
-  // Preload images progressively
+  // Preload images progressively into a useRef to prevent re-renders and lag
   useEffect(() => {
-    const loadedImages: HTMLImageElement[] = new Array(FRAME_COUNT)
+    const loadedImages = new Array(FRAME_COUNT)
+    imagesRef.current = loadedImages
     let count = 0
 
     // 1. Load the first frame immediately for instant visual feedback
@@ -28,9 +29,9 @@ export default function ScrollyCanvas() {
     firstImg.src = `/sequence/frame_000_delay-0.066s.png`
     firstImg.onload = () => {
       loadedImages[0] = firstImg
-      setImages([...loadedImages])
       setFirstFrameLoaded(true)
-      setLoadedCount(prev => prev + 1)
+      count++
+      setLoadedCount(count)
       
       // 2. Load the remaining frames in the background
       loadRemainingFrames()
@@ -48,17 +49,19 @@ export default function ScrollyCanvas() {
         
         img.onload = () => {
           loadedImages[i] = img
-          // Update images array state to include the newly loaded image
-          setImages([...loadedImages])
-          setLoadedCount(prev => {
-            const nextCount = prev + 1
-            return nextCount
-          })
+          count++
+          
+          // Throttle state updates: Only re-render UI progress every 4 frames (or at 100%) to keep main thread 100% jank-free
+          if (count % 4 === 0 || count === FRAME_COUNT) {
+            setLoadedCount(count)
+          }
         }
         
         img.onerror = () => {
-          // Count even if failed to avoid getting stuck at <100%
-          setLoadedCount(prev => prev + 1)
+          count++
+          if (count % 4 === 0 || count === FRAME_COUNT) {
+            setLoadedCount(count)
+          }
         }
       }
     }
@@ -69,6 +72,8 @@ export default function ScrollyCanvas() {
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
     if (!ctx) return
+    
+    const images = imagesRef.current
     
     // Find the best available frame: closest loaded frame to the target index
     let img = images[index]
@@ -115,9 +120,9 @@ export default function ScrollyCanvas() {
       0, 0, img.width, croppedHeight,
       centerShift_x, centerShift_y, img.width * ratio, croppedHeight * ratio
     )
-  }, [images])
+  }, [])
 
-  // Update canvas on scroll
+  // Update canvas on scroll (super fast direct draw, no React cycles triggered)
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
      const frameIndex = Math.min(
         FRAME_COUNT - 1,
@@ -137,7 +142,7 @@ export default function ScrollyCanvas() {
        window.addEventListener('resize', handleResize)
        return () => window.removeEventListener('resize', handleResize)
      }
-  }, [firstFrameLoaded, images, scrollYProgress, drawFrame])
+  }, [firstFrameLoaded, scrollYProgress, drawFrame])
 
   const loadedPercentage = Math.round((loadedCount / FRAME_COUNT) * 100)
 
