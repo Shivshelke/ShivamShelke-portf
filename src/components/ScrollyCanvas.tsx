@@ -10,38 +10,86 @@ export default function ScrollyCanvas() {
   const containerRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [images, setImages] = useState<HTMLImageElement[]>([])
+  const [loadedCount, setLoadedCount] = useState(0)
+  const [firstFrameLoaded, setFirstFrameLoaded] = useState(false)
   
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end end']
   })
   
-  // Preload images
+  // Preload images progressively
   useEffect(() => {
-    const loadedImages: HTMLImageElement[] = []
-    let loadedCount = 0
-    
-    // Small optimization using Map or directly Array
-    for (let i = 0; i < FRAME_COUNT; i++) {
-      const img = new Image()
-      img.src = `/sequence/frame_${i.toString().padStart(3, '0')}_delay-0.066s.png`
-      img.onload = () => {
-        loadedCount++
-        if (loadedCount === FRAME_COUNT) {
-          setImages(loadedImages)
+    const loadedImages: HTMLImageElement[] = new Array(FRAME_COUNT)
+    let count = 0
+
+    // 1. Load the first frame immediately for instant visual feedback
+    const firstImg = new Image()
+    firstImg.src = `/sequence/frame_000_delay-0.066s.png`
+    firstImg.onload = () => {
+      loadedImages[0] = firstImg
+      setImages([...loadedImages])
+      setFirstFrameLoaded(true)
+      setLoadedCount(prev => prev + 1)
+      
+      // 2. Load the remaining frames in the background
+      loadRemainingFrames()
+    }
+    firstImg.onerror = () => {
+      // Fallback in case first frame fails
+      setFirstFrameLoaded(true)
+      loadRemainingFrames()
+    }
+
+    const loadRemainingFrames = () => {
+      for (let i = 1; i < FRAME_COUNT; i++) {
+        const img = new Image()
+        img.src = `/sequence/frame_${i.toString().padStart(3, '0')}_delay-0.066s.png`
+        
+        img.onload = () => {
+          loadedImages[i] = img
+          // Update images array state to include the newly loaded image
+          setImages([...loadedImages])
+          setLoadedCount(prev => {
+            const nextCount = prev + 1
+            return nextCount
+          })
+        }
+        
+        img.onerror = () => {
+          // Count even if failed to avoid getting stuck at <100%
+          setLoadedCount(prev => prev + 1)
         }
       }
-      loadedImages.push(img)
     }
   }, [])
   
   const drawFrame = useCallback((index: number) => {
-    if (images.length === 0 || !canvasRef.current) return
+    if (!canvasRef.current) return
     const canvas = canvasRef.current
     const ctx = canvas.getContext('2d')
     if (!ctx) return
     
-    const img = images[index]
+    // Find the best available frame: closest loaded frame to the target index
+    let img = images[index]
+    if (!img || !img.complete) {
+      // Fallback: search backwards for closest loaded frame
+      let fallbackIndex = index
+      while (fallbackIndex >= 0 && (!images[fallbackIndex] || !images[fallbackIndex].complete)) {
+        fallbackIndex--
+      }
+      
+      // If no backward frame, search forward
+      if (fallbackIndex < 0) {
+        fallbackIndex = index
+        while (fallbackIndex < FRAME_COUNT && (!images[fallbackIndex] || !images[fallbackIndex].complete)) {
+          fallbackIndex++
+        }
+      }
+      
+      img = images[fallbackIndex]
+    }
+    
     if (!img || !img.complete) return
     
     // Set internal resolution just-in-time
@@ -71,38 +119,36 @@ export default function ScrollyCanvas() {
 
   // Update canvas on scroll
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
-     if (images.length === FRAME_COUNT) {
-        const frameIndex = Math.min(
-           FRAME_COUNT - 1,
-           Math.floor(latest * FRAME_COUNT)
-        )
-        // Framer Motion automatically throttles this gracefully via rAFs internally
-        drawFrame(frameIndex)
-     }
+     const frameIndex = Math.min(
+        FRAME_COUNT - 1,
+        Math.floor(latest * FRAME_COUNT)
+     )
+     drawFrame(frameIndex)
   })
 
-  // Initial render when images finish loading & Handle Resizing
+  // Initial render when first image finishes loading & Handle Resizing
   useEffect(() => {
-    if (images.length === FRAME_COUNT) {
-       // Force draw first frame
+    if (firstFrameLoaded) {
        drawFrame(0)
        
        const handleResize = () => {
          drawFrame(Math.min(FRAME_COUNT - 1, Math.floor(scrollYProgress.get() * FRAME_COUNT)))
        }
-        window.addEventListener('resize', handleResize)
-        return () => window.removeEventListener('resize', handleResize)
+       window.addEventListener('resize', handleResize)
+       return () => window.removeEventListener('resize', handleResize)
      }
-  }, [images, scrollYProgress, drawFrame])
+  }, [firstFrameLoaded, images, scrollYProgress, drawFrame])
+
+  const loadedPercentage = Math.round((loadedCount / FRAME_COUNT) * 100)
 
   return (
     <div ref={containerRef} className="relative w-full h-[500vh] bg-[#0b0d12]">
       <div className="sticky top-0 w-full h-screen overflow-hidden">
-        {/* Hide canvas slightly until images preload, or standard fade-in */}
+        {/* Canvas fades in as soon as the first frame is ready */}
         <canvas
           ref={canvasRef}
-          className={`absolute inset-0 z-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out ${
-            images.length === FRAME_COUNT ? 'opacity-100' : 'opacity-0'
+          className={`absolute inset-0 z-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
+            firstFrameLoaded ? 'opacity-100' : 'opacity-0'
           }`}
         />
 
@@ -121,10 +167,19 @@ export default function ScrollyCanvas() {
         {/* Premium Cinematic Film Grain Texture Overlay */}
         <div className="pointer-events-none absolute inset-0 z-[4] cinematic-grain opacity-[0.045] mix-blend-overlay" />
         
-        {/* Loading state optionally */}
-        {images.length < FRAME_COUNT && (
-          <div className="absolute inset-0 z-30 flex items-center justify-center text-white/60 text-sm italic backdrop-blur-[1px]">
-            Loading sequence... {Math.round((images.length / FRAME_COUNT) * 100)}%
+        {/* Glassmorphism Loader for initial frame (very fast) */}
+        {!firstFrameLoaded && (
+          <div className="absolute inset-0 z-30 flex flex-col items-center justify-center text-white bg-[#06070a] transition-opacity duration-500">
+            <div className="w-12 h-12 border-2 border-purple-500/30 border-t-purple-500 rounded-full animate-spin mb-4" />
+            <div className="text-white/60 text-sm tracking-widest uppercase">Initializing...</div>
+          </div>
+        )}
+
+        {/* Subtle, beautiful background download progress indicator */}
+        {loadedCount < FRAME_COUNT && firstFrameLoaded && (
+          <div className="absolute bottom-6 right-6 z-30 flex items-center gap-3 px-4 py-2 bg-black/60 border border-white/10 backdrop-blur-md rounded-full text-xs text-white/70 shadow-lg animate-pulse">
+            <div className="w-2 h-2 rounded-full bg-purple-500 animate-ping" />
+            <span>Caching animations: {loadedPercentage}%</span>
           </div>
         )}
 
