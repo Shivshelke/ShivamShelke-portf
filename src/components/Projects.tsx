@@ -81,7 +81,7 @@ export default function Projects() {
 
       {/* 1. Projects Section */}
       <section id="projects-section" className="relative py-28 px-6 md:px-16 lg:px-24 max-w-7xl mx-auto">
-        
+
         {/* Title Block */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-4">
           <div>
@@ -105,8 +105,8 @@ export default function Projects() {
             { val: 'AI & Cloud', label: 'Systems Builder' },
             { val: 'Premium', label: 'SaaS Products' }
           ].map((metric, idx) => (
-            <div 
-              key={idx} 
+            <div
+              key={idx}
               className="bg-slate-950/40 border border-slate-900/60 rounded-2xl p-5 backdrop-blur-md flex flex-col justify-center hover:border-slate-800/80 transition-all duration-300 hover:shadow-[0_0_20px_rgba(255,255,255,0.02)] select-none cursor-default"
             >
               <span className="text-2xl font-black bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 text-transparent leading-none">
@@ -121,9 +121,9 @@ export default function Projects() {
 
         {/* Asymmetrical Showcase Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          
+
           {/* Card 1: VEXN (Featured Left - 7 Cols on desktop) */}
-          <div 
+          <div
             className="group relative lg:col-span-7 rounded-3xl bg-slate-950/40 border border-slate-900 p-6 md:p-8 transition-all duration-500 hover:-translate-y-1 hover:border-slate-800 hover:shadow-[0_30px_60px_rgba(0,0,0,0.6)] backdrop-blur-xl flex flex-col justify-between"
             style={{ boxShadow: 'inset 0 0 30px rgba(255,255,255,0.01), 0 10px 30px rgba(0,0,0,0.2)' }}
           >
@@ -141,9 +141,9 @@ export default function Projects() {
                   </div>
                 </div>
                 <div className="absolute inset-0 top-8 overflow-hidden w-full h-full">
-                  <img 
-                    src="/projects/vexn.png" 
-                    alt="Vexn E-commerce Screenshot" 
+                  <img
+                    src="/projects/vexn.png"
+                    alt="Vexn E-commerce Screenshot"
                     className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                   />
                 </div>
@@ -168,9 +168,9 @@ export default function Projects() {
 
             <div>
               <div className="w-full h-[1px] bg-slate-900/80 mb-6" />
-              <a 
-                href="https://vexn.in" 
-                target="_blank" 
+              <a
+                href="https://vexn.in"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 text-xs font-bold tracking-widest text-purple-400 group-hover:text-purple-300 transition-all uppercase"
               >
@@ -181,7 +181,7 @@ export default function Projects() {
           </div>
 
           {/* Card 2: SYNAPSE (Large Right - 5 Cols on desktop) */}
-          <div 
+          <div
             className="group relative lg:col-span-5 rounded-3xl bg-slate-950/40 border border-slate-900 p-6 md:p-8 transition-all duration-500 hover:-translate-y-1 hover:border-slate-800 hover:shadow-[0_30px_60px_rgba(0,0,0,0.6)] backdrop-blur-xl flex flex-col justify-between"
             style={{ boxShadow: 'inset 0 0 30px rgba(255,255,255,0.01), 0 10px 30px rgba(0,0,0,0.2)' }}
           >
@@ -195,12 +195,12 @@ export default function Projects() {
                   <span className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
                   <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
                   <span className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
-                  <span className="text-[10px] text-slate-500 font-mono ml-4 tracking-wider truncate max-w-[150px]">sppupyq-synapse.vercel.app</span>
+                  <span className="text-[10px] text-slate-500 font-mono ml-4 tracking-wider truncate max-w-[150px]">sppupyq.vercel.app</span>
                 </div>
                 <div className="absolute inset-0 top-8 overflow-hidden w-full h-full">
-                  <img 
-                    src="/projects/synapse.png" 
-                    alt="Synapse SPPU PYQ Portal Screenshot" 
+                  <img
+                    src="/projects/synapse.png"
+                    alt="Synapse SPPU PYQ Portal Screenshot"
                     className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                   />
                 </div>
@@ -225,30 +225,113 @@ export default function Projects() {
 
             <div>
               <div className="w-full h-[1px] bg-slate-900/80 mb-6" />
-              <a 
-                href="https://sppupyq-synapse.vercel.app/#about" 
-                target="_blank" 
+              <div className="flex flex-wrap items-center gap-6">
+                <a
+                  href="https://sppupyq.vercel.app"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-xs font-bold tracking-widest text-purple-400 group-hover:text-purple-300 transition-all uppercase"
+                >
+                  <span>Visit Platform</span>
+                  <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                </a>
+                <a
+                  href="https://github.com/Shivshelke/SPPUPYQS"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-xs font-bold tracking-widest text-slate-400 hover:text-white transition-all uppercase"
+                >
+                  <span>View Codebase</span>
+                  <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Card 3: JBPH Financial Services (Left - 5 Cols on desktop) */}
+          <div
+            className="group relative lg:col-span-5 rounded-3xl bg-slate-950/40 border border-slate-900 p-6 md:p-8 transition-all duration-500 hover:-translate-y-1 hover:border-slate-800 hover:shadow-[0_30px_60px_rgba(0,0,0,0.6)] backdrop-blur-xl flex flex-col justify-between"
+            style={{ boxShadow: 'inset 0 0 30px rgba(255,255,255,0.01), 0 10px 30px rgba(0,0,0,0.2)' }}
+          >
+            {/* Subtle blue/cyan background glow */}
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" style={{ background: 'radial-gradient(circle at 10% 10%, rgba(59,130,246,0.08), transparent 50%)' }} />
+
+            <div>
+              {/* Premium Browser UI Mockup */}
+              <div className="w-full aspect-[16/10] bg-slate-950/80 rounded-2xl border border-slate-900/60 overflow-hidden relative mb-8 group-hover:border-blue-500/25 transition-all duration-500 select-none shadow-2xl">
+                <div className="w-full h-8 bg-slate-900/40 border-b border-slate-950/95 flex items-center px-4 gap-1.5 justify-start">
+                  <span className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
+                  <span className="text-[10px] text-slate-500 font-mono ml-4 tracking-wider truncate max-w-[150px]">jbph-pvt.vercel.app</span>
+                </div>
+                <div className="absolute inset-0 top-8 overflow-hidden w-full h-full">
+                  <img
+                    src="/projects/jbph_cropped.png"
+                    alt="JBPH Financial Services Screenshot"
+                    className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                  />
+                </div>
+              </div>
+
+              {/* Badges */}
+              <div className="flex flex-wrap gap-2 mb-4">
+                {['Next.js', 'Tailwind', 'Financial Analytics', 'Dashboard'].map((badge) => (
+                  <span key={badge} className="text-[10px] font-bold tracking-wider text-slate-400 bg-slate-900/80 border border-slate-800/80 px-2.5 py-1 rounded-full uppercase">
+                    {badge}
+                  </span>
+                ))}
+              </div>
+
+              <h3 className="text-2xl font-bold text-white mb-2 tracking-tight group-hover:text-purple-300 transition-colors duration-300">
+                JBPH Financial Services
+              </h3>
+              <p className="text-slate-400 text-sm font-light mb-6 leading-relaxed">
+                Premium corporate platform built for experienced banking professionals. Enables transparent, efficient, and customized financial solutions across India.
+              </p>
+
+              {/* Metrics Bullet points */}
+              <ul className="flex flex-col gap-2.5 mb-8">
+                <li className="flex items-center gap-2.5 text-xs text-slate-300 font-medium leading-relaxed">
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500 flex-shrink-0 animate-pulse" />
+                  <span>₹53+ Crore disbursed cases successfully.</span>
+                </li>
+                <li className="flex items-center gap-2.5 text-xs text-slate-300 font-medium leading-relaxed">
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500 flex-shrink-0 animate-pulse" />
+                  <span>Professional team from top banks (HDFC, ICICI, Axis).</span>
+                </li>
+                <li className="flex items-center gap-2.5 text-xs text-slate-300 font-medium leading-relaxed">
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500 flex-shrink-0 animate-pulse" />
+                  <span>Trusted by hundreds of individuals & businesses.</span>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <div className="w-full h-[1px] bg-slate-900/80 mb-6" />
+              <a
+                href="https://jbph-pvt.vercel.app"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 text-xs font-bold tracking-widest text-purple-400 group-hover:text-purple-300 transition-all uppercase"
               >
-                <span>View Case Study</span>
+                <span>Visit Platform</span>
                 <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
               </a>
             </div>
           </div>
 
-          {/* Card 3: AI Content Automation (Wide Bottom Row - 12 Cols) */}
-          <div 
-            className="group relative lg:col-span-12 rounded-3xl bg-slate-950/40 border border-slate-900 p-6 md:p-8 transition-all duration-500 hover:-translate-y-1 hover:border-slate-800 hover:shadow-[0_30px_60px_rgba(0,0,0,0.6)] backdrop-blur-xl flex flex-col justify-between"
+          {/* Card 4: AI Content Automation (Featured Right - 7 Cols on desktop) */}
+          <div
+            className="group relative lg:col-span-7 rounded-3xl bg-slate-950/40 border border-slate-900 p-6 md:p-8 transition-all duration-500 hover:-translate-y-1 hover:border-slate-800 hover:shadow-[0_30px_60px_rgba(0,0,0,0.6)] backdrop-blur-xl flex flex-col justify-between"
             style={{ boxShadow: 'inset 0 0 30px rgba(255,255,255,0.01), 0 10px 30px rgba(0,0,0,0.2)' }}
           >
             {/* Subtle emerald background glow */}
             <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" style={{ background: 'radial-gradient(circle at 10% 10%, rgba(16,185,129,0.06), transparent 50%)' }} />
 
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
-              
-              {/* Left Side: Cyberpunk Automation Node Flow Mockup */}
-              <div className="md:col-span-5 w-full bg-slate-950/80 rounded-2xl border border-slate-900/60 overflow-hidden relative group-hover:border-emerald-500/25 transition-all duration-500 select-none shadow-2xl min-h-[180px] flex items-center justify-center p-6">
+            <div>
+              {/* Cyberpunk Automation Node Flow Mockup */}
+              <div className="w-full aspect-[16/10] bg-slate-950/80 rounded-2xl border border-slate-900/60 overflow-hidden relative mb-8 group-hover:border-emerald-500/25 transition-all duration-500 select-none shadow-2xl flex items-center justify-center p-6">
                 <div className="absolute inset-0 flex flex-col justify-center p-6 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.08),transparent_70%)]">
                   <div className="flex flex-col gap-4">
                     <div className="flex items-center gap-3">
@@ -268,40 +351,34 @@ export default function Projects() {
                 </div>
               </div>
 
-              {/* Right Side: Case Study copy */}
-              <div className="md:col-span-7 flex flex-col justify-between h-full">
-                <div>
-                  {/* Badges */}
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {['Python', 'Gemini API', 'ADK Agents', 'Automation'].map((badge) => (
-                      <span key={badge} className="text-[10px] font-bold tracking-wider text-slate-400 bg-slate-900/80 border border-slate-800/80 px-2.5 py-1 rounded-full uppercase">
-                        {badge}
-                      </span>
-                    ))}
-                  </div>
-
-                  <h3 className="text-2xl font-bold text-white mb-2 tracking-tight group-hover:text-purple-300 transition-colors duration-300">
-                    AI Content Automation
-                  </h3>
-                  <p className="text-slate-400 text-sm font-light mb-8 leading-relaxed max-w-xl">
-                    Intelligent visual parser and scheduler framework. Automates descriptive tags and cross-platform publishing parameters using small custom language models and secure agent loops.
-                  </p>
-                </div>
-
-                <div>
-                  <div className="w-full h-[1px] bg-slate-900/80 mb-6" />
-                  <a 
-                    href="https://github.com/Shivamshelke07" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-xs font-bold tracking-widest text-purple-400 group-hover:text-purple-300 transition-all uppercase"
-                  >
-                    <span>View Codebase</span>
-                    <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
-                  </a>
-                </div>
+              {/* Badges */}
+              <div className="flex flex-wrap gap-2 mb-4">
+                {['Python', 'Gemini API', 'ADK Agents', 'Automation'].map((badge) => (
+                  <span key={badge} className="text-[10px] font-bold tracking-wider text-slate-400 bg-slate-900/80 border border-slate-800/80 px-2.5 py-1 rounded-full uppercase">
+                    {badge}
+                  </span>
+                ))}
               </div>
 
+              <h3 className="text-2xl font-bold text-white mb-2 tracking-tight group-hover:text-purple-300 transition-colors duration-300">
+                AI Content Automation
+              </h3>
+              <p className="text-slate-400 text-sm font-light mb-8 leading-relaxed max-w-lg">
+                Intelligent visual parser and scheduler framework. Automates descriptive tags and cross-platform publishing parameters using small custom language models and secure agent loops.
+              </p>
+            </div>
+
+            <div>
+              <div className="w-full h-[1px] bg-slate-900/80 mb-6" />
+              <a
+                href="https://github.com/Shivamshelke07"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-xs font-bold tracking-widest text-purple-400 group-hover:text-purple-300 transition-all uppercase"
+              >
+                <span>View Codebase</span>
+                <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+              </a>
             </div>
           </div>
 

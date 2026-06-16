@@ -206,20 +206,18 @@ export default function Overlay({ progress }: { progress: MotionValue<number> })
             <span className="absolute right-10 text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 group-hover:text-purple-400 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0 whitespace-nowrap bg-slate-950/95 border border-slate-800/80 px-2.5 py-1.5 rounded-lg backdrop-blur-md shadow-2xl">
               {phase === 1 ? 'Start / Hero' : phase === 2 ? 'About Shivam' : 'My Mission'}
             </span>
-            
+
             {/* Indicator text (01, 02, 03) */}
-            <span className={`absolute right-6 text-[9px] font-bold tracking-wider mr-2 opacity-35 group-hover:opacity-75 transition-opacity ${
-              activePhase === phase ? 'text-purple-400 opacity-80' : 'text-slate-500'
-            }`}>
+            <span className={`absolute right-6 text-[9px] font-bold tracking-wider mr-2 opacity-35 group-hover:opacity-75 transition-opacity ${activePhase === phase ? 'text-purple-400 opacity-80' : 'text-slate-500'
+              }`}>
               0{phase}
             </span>
 
             {/* Glowing active indicator dot */}
-            <div className={`w-2.5 h-2.5 rounded-full transition-all duration-500 border ${
-              activePhase === phase
+            <div className={`w-2.5 h-2.5 rounded-full transition-all duration-500 border ${activePhase === phase
                 ? 'bg-purple-500 border-purple-400 shadow-[0_0_15px_rgba(168,85,247,0.95)] scale-125'
                 : 'bg-slate-900 border-slate-700 hover:border-slate-500 hover:scale-110'
-            }`} />
+              }`} />
           </button>
         ))}
       </div>
