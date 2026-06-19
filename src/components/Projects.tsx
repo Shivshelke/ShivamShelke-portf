@@ -321,7 +321,7 @@ export default function Projects() {
             </div>
           </div>
 
-          {/* Card 4: AI Content Automation (Featured Right - 7 Cols on desktop) */}
+          {/* Card 4: PDFGo (Featured Right - 7 Cols on desktop) */}
           <div
             className="group relative lg:col-span-7 rounded-3xl bg-slate-950/40 border border-slate-900 p-6 md:p-8 transition-all duration-500 hover:-translate-y-1 hover:border-slate-800 hover:shadow-[0_30px_60px_rgba(0,0,0,0.6)] backdrop-blur-xl flex flex-col justify-between"
             style={{ boxShadow: 'inset 0 0 30px rgba(255,255,255,0.01), 0 10px 30px rgba(0,0,0,0.2)' }}
@@ -330,30 +330,26 @@ export default function Projects() {
             <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" style={{ background: 'radial-gradient(circle at 10% 10%, rgba(16,185,129,0.06), transparent 50%)' }} />
 
             <div>
-              {/* Cyberpunk Automation Node Flow Mockup */}
-              <div className="w-full aspect-[16/10] bg-slate-950/80 rounded-2xl border border-slate-900/60 overflow-hidden relative mb-8 group-hover:border-emerald-500/25 transition-all duration-500 select-none shadow-2xl flex items-center justify-center p-6">
-                <div className="absolute inset-0 flex flex-col justify-center p-6 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.08),transparent_70%)]">
-                  <div className="flex flex-col gap-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center">
-                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-                      </div>
-                      <span className="text-[10px] font-bold tracking-wider text-slate-400 font-mono">Media Parser Running...</span>
-                    </div>
-                    <div className="w-[1.5px] h-6 bg-gradient-to-b from-emerald-500/40 to-transparent ml-4" />
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center">
-                        <span className="w-2.5 h-2.5 rounded-full bg-cyan-500 animate-ping" />
-                      </div>
-                      <span className="text-[10px] font-bold tracking-wider text-slate-400 font-mono">Auto Visual Tagging Complete</span>
-                    </div>
-                  </div>
+              {/* Premium Browser UI Mockup */}
+              <div className="w-full aspect-[16/10] bg-slate-950/80 rounded-2xl border border-slate-900/60 overflow-hidden relative mb-8 group-hover:border-emerald-500/25 transition-all duration-500 select-none shadow-2xl">
+                <div className="w-full h-8 bg-slate-900/40 border-b border-slate-950/95 flex items-center px-4 gap-1.5 justify-start">
+                  <span className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/60" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-green-500/60" />
+                  <span className="text-[10px] text-slate-500 font-mono ml-4 tracking-wider truncate max-w-[150px]">pdfgo-app.vercel.app</span>
+                </div>
+                <div className="absolute inset-0 top-8 overflow-hidden w-full h-full">
+                  <img
+                    src="/projects/pdfgo.png"
+                    alt="PDFGo Screenshot"
+                    className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                  />
                 </div>
               </div>
 
               {/* Badges */}
               <div className="flex flex-wrap gap-2 mb-4">
-                {['Python', 'Gemini API', 'ADK Agents', 'Automation'].map((badge) => (
+                {['Next.js', 'TypeScript', 'Tailwind', 'pdf-lib'].map((badge) => (
                   <span key={badge} className="text-[10px] font-bold tracking-wider text-slate-400 bg-slate-900/80 border border-slate-800/80 px-2.5 py-1 rounded-full uppercase">
                     {badge}
                   </span>
@@ -361,24 +357,55 @@ export default function Projects() {
               </div>
 
               <h3 className="text-2xl font-bold text-white mb-2 tracking-tight group-hover:text-purple-300 transition-colors duration-300">
-                AI Content Automation
+                PDFGo
               </h3>
-              <p className="text-slate-400 text-sm font-light mb-8 leading-relaxed max-w-lg">
-                Intelligent visual parser and scheduler framework. Automates descriptive tags and cross-platform publishing parameters using small custom language models and secure agent loops.
+              <p className="text-slate-400 text-sm font-light mb-6 leading-relaxed max-w-lg">
+                A privacy-first online PDF and image processing utility toolkit. All files are processed 100% client-side within the browser, ensuring absolute security and data confidentiality.
               </p>
+
+              {/* Feature Bullet points */}
+              <ul className="flex flex-col gap-2.5 mb-8">
+                <li className="flex items-center gap-2.5 text-xs text-slate-300 font-medium leading-relaxed">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0 animate-pulse" />
+                  <span><strong>100% In-Browser:</strong> Client-side execution using pdf-lib and pdf.js.</span>
+                </li>
+                <li className="flex items-center gap-2.5 text-xs text-slate-300 font-medium leading-relaxed">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0 animate-pulse" />
+                  <span><strong>Organize:</strong> Merge, split, re-order, or delete PDF pages easily.</span>
+                </li>
+                <li className="flex items-center gap-2.5 text-xs text-slate-300 font-medium leading-relaxed">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0 animate-pulse" />
+                  <span><strong>Convert & Optimize:</strong> Compress PDFs, and convert between PDF, Word, and Images.</span>
+                </li>
+                <li className="flex items-center gap-2.5 text-xs text-slate-300 font-medium leading-relaxed">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0 animate-pulse" />
+                  <span><strong>Security & Image Tools:</strong> Password-protect or decrypt PDFs; compress, resize, and convert images.</span>
+                </li>
+              </ul>
             </div>
 
             <div>
               <div className="w-full h-[1px] bg-slate-900/80 mb-6" />
-              <a
-                href="https://github.com/Shivamshelke07"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-xs font-bold tracking-widest text-purple-400 group-hover:text-purple-300 transition-all uppercase"
-              >
-                <span>View Codebase</span>
-                <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
-              </a>
+              <div className="flex flex-wrap items-center gap-6">
+                <a
+                  href="https://pdfgo-app.vercel.app"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-xs font-bold tracking-widest text-purple-400 group-hover:text-purple-300 transition-all uppercase"
+                >
+                  <span>Visit Platform</span>
+                  <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                </a>
+                <a
+                  href="https://github.com/Shivshelke/PDFGo"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-xs font-bold tracking-widest text-slate-400 hover:text-white transition-all uppercase"
+                >
+                  <span>View Codebase</span>
+                  <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+                </a>
+              </div>
             </div>
           </div>
 
